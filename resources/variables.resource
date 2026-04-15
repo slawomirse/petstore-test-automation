@@ -6,3 +6,5 @@ ${DEFAULT_PET_NAME}        Doggie
 ${DEFAULT_ADMIN_USERNAME}  admin
 ${DEFAULT_ADMIN_PASSWORD}  admin
 ${token}                   ${EMPTY}
+${HEADLESS}                False
+${BROWSER}                 chromium
