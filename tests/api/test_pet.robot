@@ -1,8 +1,6 @@
 *** Settings ***
-Library    RequestsLibrary
-Library    JSONLibrary
+Resource    ../../resources/api/common.resource
 
 *** Test Cases ***
 Domyslne Zwierze Powinno Istniec
-    ${response}=    GET    http://127.0.0.1:8000/pet/1
-    Should Be Equal As Strings    ${response.status_code}    200
+    ${response}=    Send GET Request    /pet/${DEFAULT_PET_ID}    expected_status_code=200
