@@ -17,6 +17,11 @@ Pobranie Zwierzecia Po ID Powinno Zwrocic Poprawna Nazwe
     ${pet_name}=    Get Json Field    ${response}    name
     Should Be Equal    ${pet_name}    ${DEFAULT_PET_NAME}
 
+Pobranie Zwierzedzie Po Statusie Powinno Zwracac Liste Zwierzat
+    [Documentation]    Sprawdza, czy pobranie zwierzat o statusie "available" zwraca liste zwierzat.
+    ${response}=    Send GET Request    /pet/findByStatus    params=?status=available    expected_status_code=200
+    Should Be True    len(${response.json()}) > 0
+
 Tworzenie Zwierzecia Przez Niezalogowanego Uzytkownika
     [Documentation]    Proba utworzenia zwierzecia przez niezalogowanego uzytkownika
     ${headers}=    Create Json Headers

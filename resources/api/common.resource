@@ -6,8 +6,8 @@ Library    ../../libraries/payload_builders.py
 
 *** Keywords ***
 Send GET Request
-    [Arguments]    ${endpoint}    ${auth}=@{EMPTY}    ${expected_status_code}=200
-    ${response}=    GET    ${BASE_URL}${endpoint}    auth=${auth}    expected_status=any
+    [Arguments]    ${endpoint}    ${auth}=@{EMPTY}    ${params}=${EMPTY}    ${expected_status_code}=200
+    ${response}=    GET    ${BASE_URL}${endpoint}${params}    auth=${auth}    expected_status=any
     Should Be Equal As Integers    ${response.status_code}    ${expected_status_code}
     RETURN    ${response}
 
