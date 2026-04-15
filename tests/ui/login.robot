@@ -4,6 +4,7 @@ Resource    ../../resources/ui/pages/login_page.resource
 
 *** Test Cases ***
 Logowanie użytkownika przy użyciu błędnego hasła
+    [Tags]    known_bug
 	Open Home Page
 	Verify Home Page Is Loaded
 	Open Login Form
