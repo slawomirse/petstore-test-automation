@@ -13,8 +13,11 @@ ${HOME_PAGE_DEFAULT_PET_NAME}       xpath=//*[@id='featured-pets']//*[@data-id='
 Open Home Page
 	Go To    ${BASE_FRONTEND_URL}
 
+Verify Page Is Loaded
+    Wait For Load State    load
+
 Verify Home Page Is Loaded
-	Wait For Load State    load
+	Verify Page Is Loaded
 	Wait For Elements State    ${HOME_PAGE_HERO_TITLE}    visible
 	Wait For Elements State    ${HOME_PAGE_SIGN_IN_BUTTON}    visible
 	${page_title}=    Get Title
