@@ -20,6 +20,9 @@ def generate_random_first_name() -> str:
 def generate_random_last_name() -> str:
     return _fake.last_name()
 
+def generate_random_phone() -> str:
+    return _fake.phone_number()
+
 def build_pet_payload(
     pet_id: int | None = None,
     name: str | None = None,

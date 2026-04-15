@@ -34,6 +34,15 @@ Verify User Is Logged In
     ${login_button_text}=    Get Text    ${HOME_PAGE_LOGIN_BUTTON}
     Should Be Equal    ${login_button_text}    Sign Out
 
+Logout
+    Click    ${HOME_PAGE_LOGIN_BUTTON}
+
+Logout If Needed
+    ${user_label}=    Get Text    ${HOME_PAGE_USER_LABEL}
+    IF    '${user_label}' != 'Guest'
+        Logout
+    END
+
 Verify Default Pet Is Displayed
 	${pet_name}=    Get Text    ${HOME_PAGE_DEFAULT_PET_NAME}
 	Should Be Equal    ${pet_name}    ${DEFAULT_PET_NAME}
