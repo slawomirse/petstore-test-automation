@@ -21,6 +21,10 @@ Create Json Headers
     &{headers}=    Create Dictionary    Content-Type=application/json
     RETURN    ${headers}
 
+Create Bearer Headers
+    &{headers}=    Create Dictionary    Authorization=Bearer ${token}    Content-Type=application/json
+    RETURN    ${headers}
+
 Get Json Field
     [Arguments]    ${response}    ${field_name}
     RETURN    ${response.json()['${field_name}']}
