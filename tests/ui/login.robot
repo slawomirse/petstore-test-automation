@@ -11,3 +11,11 @@ Logowanie użytkownika przy użyciu błędnego hasła
 	Submit Login Form With Credentials    ${DEFAULT_ADMIN_USERNAME}    wrong-password
 	Verify Login Error Is Displayed
 	Verify User Is Logged In As Guest
+
+Logowanie użytkownika przy użyciu prawidłowego hasła
+	Open Home Page
+	Verify Home Page Is Loaded
+	Open Login Form
+	Submit Login Form With Credentials    ${DEFAULT_ADMIN_USERNAME}    ${DEFAULT_ADMIN_PASSWORD}
+	Verify Login Success Is Displayed
+	Verify User Is Logged In    ${DEFAULT_ADMIN_USERNAME}
