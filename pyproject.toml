@@ -1,0 +1,14 @@
+[project]
+name = "petstore-test-automation"
+version = "0.1.0"
+description = "Robot Framework workshops based on Petstore Postman collection"
+requires-python = ">=3.10"
+dependencies = [
+  "robotframework==7.1.1",
+  "robotframework-requests==0.9.7",
+  "robotframework-jsonlibrary==0.5",
+  "faker>=25.0.0",
+]
+
+[tool.uv]
+package = false

@@ -1,0 +1,32 @@
+services:
+  petstore:
+    image: margolek/petstore-backend:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - petstore_data:/app/data
+    environment:
+      PETSTORE_DATABASE_URL: sqlite:///./data/petstore.db
+    restart: unless-stopped
+
+  sqlite-web:
+    image: coleifer/sqlite-web
+    ports:
+      - "8081:8080"
+    volumes:
+      - petstore_data:/data
+    command: sqlite_web --host 0.0.0.0 --port 8080 /data/petstore.db
+    depends_on:
+      - petstore
+    restart: unless-stopped
+
+  frontend:
+    image: margolek/petstore-frontend:latest
+    ports:
+      - "3000:80"
+    depends_on:
+      - petstore
+    restart: unless-stopped
+
+volumes:
+  petstore_data:

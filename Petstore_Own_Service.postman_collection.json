@@ -1,0 +1,368 @@
+{
+  "info": {
+    "_postman_id": "21d8a679-d8a2-4fc4-a8f6-4ebc31fd7f8e",
+    "name": "Petstore Own Service - Kolekcja PL",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Kolekcja dopasowana do lokalnego serwisu FastAPI. Zaklada start na czystej bazie danych."
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:8000" },
+    { "key": "petId", "value": "1" },
+    { "key": "orderId", "value": "1" },
+    { "key": "username", "value": "student1" },
+    { "key": "password", "value": "Test1234" },
+    { "key": "petName", "value": "Reksio" },
+    { "key": "petStatus", "value": "available" },
+    { "key": "petTag", "value": "friendly" },
+    { "key": "sessionToken", "value": "" },
+    { "key": "apiKey", "value": "petstore-secret-api-key" }
+  ],
+  "item": [
+    {
+      "name": "1. Uzytkownik i sesja",
+      "item": [
+        {
+          "name": "Utworz uzytkownika",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user",
+              "host": ["{{baseUrl}}"],
+              "path": ["user"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"username\": \"{{username}}\",\n  \"firstName\": \"Jan\",\n  \"lastName\": \"Kowalski\",\n  \"email\": \"jan.kowalski@example.com\",\n  \"password\": \"{{password}}\",\n  \"phone\": \"123456789\",\n  \"userStatus\": 1\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 lub 400 (jesli juz istnieje)', function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Zaloguj uzytkownika (Basic Auth)",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                { "key": "username", "value": "{{username}}", "type": "string" },
+                { "key": "password", "value": "{{password}}", "type": "string" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "login"]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "const body = pm.response.json();",
+                  "if (body && body.message) pm.collectionVariables.set('sessionToken', body.message);",
+                  "pm.test('Token sesji zapisany', function () {",
+                  "  pm.expect(pm.collectionVariables.get('sessionToken')).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Pobierz uzytkownika po username",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/user/{{username}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "{{username}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Zaktualizuj uzytkownika (Bearer)",
+          "request": {
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{sessionToken}}", "type": "string" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/{{username}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "{{username}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Janusz\",\n  \"lastName\": \"Kowalski\",\n  \"email\": \"janusz.kowalski@example.com\",\n  \"password\": \"{{password}}\",\n  \"phone\": \"987654321\",\n  \"userStatus\": 1\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Wyloguj po tokenie (bez auth)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "logout"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{sessionToken}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Zwierzeta",
+      "item": [
+        {
+          "name": "Wyszukaj zwierzeta po statusie (1 parametr)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/pet/findByStatus?status={{petStatus}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["pet", "findByStatus"],
+              "query": [
+                { "key": "status", "value": "{{petStatus}}" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Wyszukaj zwierzeta po tagu (1 parametr)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/pet/findByTags?tags={{petTag}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["pet", "findByTags"],
+              "query": [
+                { "key": "tags", "value": "{{petTag}}" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Dodaj zwierze (Bearer)",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{sessionToken}}", "type": "string" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pet",
+              "host": ["{{baseUrl}}"],
+              "path": ["pet"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"dog\"\n  },\n  \"name\": \"{{petName}}\",\n  \"photoUrls\": [\n    \"https://example.com/reksio.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"{{petTag}}\"\n    }\n  ],\n  \"status\": \"{{petStatus}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pobierz zwierze po ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/pet/{{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["pet", "{{petId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Zaktualizuj zwierze (Bearer)",
+          "request": {
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{sessionToken}}", "type": "string" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pet",
+              "host": ["{{baseUrl}}"],
+              "path": ["pet"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"dog\"\n  },\n  \"name\": \"{{petName}} Updated\",\n  \"photoUrls\": [\n    \"https://example.com/reksio.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"{{petTag}}\"\n    }\n  ],\n  \"status\": \"sold\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Usun zwierze (Bearer)",
+          "request": {
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{sessionToken}}", "type": "string" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pet/{{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["pet", "{{petId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Zamowienia",
+      "item": [
+        {
+          "name": "Pobierz inventory",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/store/inventory",
+              "host": ["{{baseUrl}}"],
+              "path": ["store", "inventory"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Utworz zamowienie (Bearer)",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{sessionToken}}", "type": "string" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/store/order",
+              "host": ["{{baseUrl}}"],
+              "path": ["store", "order"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"petId\": 1,\n  \"quantity\": 1,\n  \"shipDate\": \"2026-01-01T10:00:00Z\",\n  \"status\": \"placed\",\n  \"complete\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pobierz zamowienie po ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/store/order/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["store", "order", "{{orderId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Usun zamowienie (Bearer)",
+          "request": {
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{sessionToken}}", "type": "string" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/store/order/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["store", "order", "{{orderId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Admin",
+      "item": [
+        {
+          "name": "Wyczysc baze (X-API-Key)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/reset?confirm=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "reset"],
+              "query": [
+                { "key": "confirm", "value": "true" }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
