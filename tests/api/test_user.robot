@@ -15,3 +15,9 @@ Logowanie Domyslnego Uzytkownika Powinno Zwracac Token
     [Teardown]    Logout
     Login As Default Admin
     Should Not Be Empty    ${token}
+
+Utworzenie Oraz Logowanie Testowego Uzytkownika
+    [Documentation]    Sprawdza, czy mozna utworzyc testowego uzytkownika i zalogowac sie na niego.
+    [Teardown]    Logout
+    Create Authenticated Test User
+    Should Not Be Empty    ${token}
