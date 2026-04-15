@@ -17,7 +17,9 @@ ${PET_FORM_TAG_INPUT}            xpath=//*[@id='pf-tag']
 ${PET_FORM_SAVE_BUTTON}          xpath=//*[@id='pet-form']//button[@type='submit']
 ${PET_CREATE_SUCCESS_TOAST}      xpath=//*[contains(@class,'toast') and contains(normalize-space(),'Pet created')]
 ${PET_DETAIL_EDIT_BUTTON}        xpath=//*[@id='detail-edit-btn']
+${PET_DETAIL_DELETE_BUTTON}      xpath=//*[@id='detail-delete-btn']
 ${PET_FORM_EDIT_TITLE}           xpath=//*[@id='pet-form-title' and normalize-space()='Edit Pet']
+${PET_DELETE_SUCCESS_TOAST}      xpath=//*[contains(@class,'toast') and contains(normalize-space(),'deleted')]
 ${NEW_PET_NAME}                  ${EMPTY}
 ${NEW_PET_STATUS}                ${EMPTY}
 ${NEW_PET_CATEGORY_ID}           ${EMPTY}
@@ -78,6 +80,23 @@ Open Pet Details By Name
 Open Edit Pet Form
 	Click    ${PET_DETAIL_EDIT_BUTTON}
 	Wait For Elements State    ${PET_FORM_EDIT_TITLE}    visible
+
+Delete Pet
+	Handle Future Dialogs    action=accept
+	Click    ${PET_DETAIL_DELETE_BUTTON}
+
+Verify Pet Was Deleted
+	[Arguments]    ${pet_name}
+	${toast_text}=    Get Text    ${PET_DELETE_SUCCESS_TOAST}
+	Should Contain    ${toast_text}    deleted
+    Verify Page Is Loaded
+	Pet Should Not Be Visible In Grid    ${pet_name}
+
+Pet Should Not Be Visible In Grid
+	[Arguments]    ${pet_name}
+	${pet_card}=    Set Variable    xpath=//*[@id='pets-grid']//h3[normalize-space()='${pet_name}']
+	${pet_count}=    Get Element Count    ${pet_card}
+	Should Be Equal As Integers    ${pet_count}    0
 
 Generate Updated Pet Data
 	${updated_name}=    Generate Random Dog Name    UpdatedUiPet
