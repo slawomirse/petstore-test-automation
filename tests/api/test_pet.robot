@@ -26,3 +26,11 @@ Tworzenie Zwierzecia Przez Niezalogowanego Uzytkownika
 Tworzenie Zwierzecia Przez Zalogowanego Uzytkownika
     [Documentation]    Proba utworzenia zwierzecia przez zalogowanego uzytkownika
     Create Pet
+
+Aktualizacja Zwierzecia Przez Zalogowanego Uzytkownika
+    [Documentation]    Proba aktualizacji zwierzecia przez zalogowanego uzytkownika
+    [Setup]    Create Pet
+    Update Pet    payload={"id": ${pet_id}, "status": "sold", "name": "UpdatedName"}
+    ${updated}=    Send GET Request    /pet/${pet_id}    expected_status_code=200
+    ${status}=    Get Json Field    ${updated}    status
+    Should Be Equal    ${status}    sold
