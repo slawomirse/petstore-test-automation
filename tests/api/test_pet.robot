@@ -34,3 +34,9 @@ Aktualizacja Zwierzecia Przez Zalogowanego Uzytkownika
     ${updated}=    Send GET Request    /pet/${pet_id}    expected_status_code=200
     ${status}=    Get Json Field    ${updated}    status
     Should Be Equal    ${status}    sold
+
+Usuwanie Zwierzecia Przez Zalogowanego Uzytkownika
+    [Documentation]    Proba usuniecia zwierzecia przez zalogowanego uzytkownika
+    [Setup]    Create Pet
+    Delete Pet
+    Send GET Request    /pet/${pet_id}    expected_status_code=404

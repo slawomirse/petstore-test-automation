@@ -18,3 +18,9 @@ Update Pet
     ${headers}=    Create Bearer Headers
     ${response}=    Send PUT Request    /pet/    payload=${payload}    headers=${headers}    expected_status_code=200
     RETURN    ${response}
+
+Delete Pet
+    ${headers}=    Create Bearer Headers
+    ${response}=    Send DELETE Request    /pet/${pet_id}    headers=${headers}    expected_status_code=200
+    Send GET Request    /pet/${pet_id}    expected_status_code=404
+    RETURN    ${response}
