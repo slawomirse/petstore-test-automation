@@ -32,5 +32,9 @@ To execute the Robot Framework test suite (e.g., `tests/test_robot.robot`) and s
 ```
 uv run python -m robot --outputdir results tests/test_robot.robot
 ```
+Run robot tests using tags
+```
+uv run python -m robot --outputdir results --include smoke tests/api
+```
 
 The `results` directory will contain the generated output files (e.g., `output.xml`, `log.html`, `report.html`).

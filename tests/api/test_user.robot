@@ -5,6 +5,7 @@ Resource         ../../resources/api/user.resource
 
 *** Test Cases ***
 Domyslny Admin Powinien Istniec
+    [Tags]    smoke
     [Documentation]    Sprawdza, czy domyslny uzytkownik admin istnieje w systemie.
     ${response}=    Send GET Request    /user/${DEFAULT_ADMIN_USERNAME}    expected_status_code=200
     ${username}=    Get Json Field    ${response}    username
@@ -19,6 +20,7 @@ Logowanie Domyslnego Uzytkownika Powinno Zwracac Token
 Utworzenie Oraz Logowanie Testowego Uzytkownika
     [Documentation]    Sprawdza, czy mozna utworzyc testowego uzytkownika i zalogowac sie na niego.
     [Teardown]    Logout
+    [Tags]    regression
     Create Authenticated Test User
     Should Not Be Empty    ${token}
 

@@ -7,6 +7,7 @@ Suite Teardown    Logout
 
 *** Test Cases ***
 Domyslne Zwierze Powinno Istniec
+    [Tags]    smoke
     [Documentation]    Sprawdza, czy domyslne zwierze o id=${DEFAULT_PET_ID} istnieje.
     Send GET Request    /pet/${DEFAULT_PET_ID}    expected_status_code=200
 
@@ -25,6 +26,7 @@ Tworzenie Zwierzecia Przez Niezalogowanego Uzytkownika
 
 Tworzenie Zwierzecia Przez Zalogowanego Uzytkownika
     [Documentation]    Proba utworzenia zwierzecia przez zalogowanego uzytkownika
+    [Tags]    regression
     Create Pet
 
 Aktualizacja Zwierzecia Przez Zalogowanego Uzytkownika
