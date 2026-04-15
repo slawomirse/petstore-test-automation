@@ -9,3 +9,7 @@ Send GET Request
     ${response}=    GET    ${BASE_URL}${endpoint}
     Should Be Equal As Integers    ${response.status_code}    ${expected_status_code}
     RETURN    ${response}
+
+Get Json Field
+    [Arguments]    ${response}    ${field_name}
+    RETURN    ${response.json()['${field_name}']}

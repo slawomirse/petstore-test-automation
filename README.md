@@ -8,6 +8,23 @@ This project uses Robot Framework for automated testing and manages dependencies
 uv sync && source .venv/bin/activate
 ```
 
+## Run and stop application
+
+Start application
+```
+docker compose up -d
+```
+
+Stop application
+```
+docker compose down
+```
+
+Stop application and remove volumes
+```
+docker compose down -v
+```
+
 ## Running Robot Framework tests
 
 To execute the Robot Framework test suite (e.g., `tests/test_robot.robot`) and store results in the `results` directory:
