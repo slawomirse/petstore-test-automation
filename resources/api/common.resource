@@ -17,6 +17,12 @@ Send POST Request
     Should Be Equal As Integers    ${response.status_code}    ${expected_status_code}
     RETURN    ${response}
 
+Send PUT Request
+    [Arguments]    ${endpoint}    ${payload}    ${headers}=&{empty}    ${expected_status_code}=200
+    ${response}=    PUT    ${BASE_URL}${endpoint}    data=${payload}    headers=${headers}    expected_status=any
+    Should Be Equal As Integers    ${response.status_code}    ${expected_status_code}
+    RETURN    ${response}
+
 Create Json Headers
     &{headers}=    Create Dictionary    Content-Type=application/json
     RETURN    ${headers}
