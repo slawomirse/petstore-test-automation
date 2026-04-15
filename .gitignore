@@ -6,3 +6,5 @@ output.xml
 report.html
 *.pyc
 playwright-log.txt
+.github/
+.vscode/
