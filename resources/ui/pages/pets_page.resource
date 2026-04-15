@@ -1,6 +1,8 @@
 *** Settings ***
 Library    Browser
 Library    ../../../libraries/payload_builders.py
+Resource    home_page.resource
+Resource    login_page.resource
 
 *** Variables ***
 ${BROWSE_PETS_NAV_LINK}          xpath=//*[@data-page='pets']
@@ -14,6 +16,14 @@ ${PET_FORM_PHOTO_URL_INPUT}      xpath=//*[@id='pf-photo']
 ${PET_FORM_TAG_INPUT}            xpath=//*[@id='pf-tag']
 ${PET_FORM_SAVE_BUTTON}          xpath=//*[@id='pet-form']//button[@type='submit']
 ${PET_CREATE_SUCCESS_TOAST}      xpath=//*[contains(@class,'toast') and contains(normalize-space(),'Pet created')]
+${PET_DETAIL_EDIT_BUTTON}        xpath=//*[@id='detail-edit-btn']
+${PET_FORM_EDIT_TITLE}           xpath=//*[@id='pet-form-title' and normalize-space()='Edit Pet']
+${NEW_PET_NAME}                  ${EMPTY}
+${NEW_PET_STATUS}                ${EMPTY}
+${NEW_PET_CATEGORY_ID}           ${EMPTY}
+${NEW_PET_CATEGORY_NAME}         ${EMPTY}
+${NEW_PET_PHOTO_URL}             ${EMPTY}
+${NEW_PET_TAG}                   ${EMPTY}
 
 *** Keywords ***
 Open Browse Pets Page
@@ -45,6 +55,44 @@ Fill New Pet Form
 
 Submit New Pet Form
 	Click    ${PET_FORM_SAVE_BUTTON}
+
+Create Pet
+	Open Home Page
+	Verify Home Page Is Loaded
+	Login As Default User
+	Open Browse Pets Page
+	Create New Pet For Update Test
+
+Create New Pet For Update Test
+	Generate New Pet Data
+	Open Add New Pet Form
+	Fill New Pet Form    ${NEW_PET_NAME}    ${NEW_PET_STATUS}    ${NEW_PET_CATEGORY_ID}    ${NEW_PET_CATEGORY_NAME}    ${NEW_PET_PHOTO_URL}    ${NEW_PET_TAG}
+	Submit New Pet Form
+	Verify New Pet Was Added    ${NEW_PET_NAME}
+
+Open Pet Details By Name
+	[Arguments]    ${pet_name}
+	${pet_card}=    Set Variable    xpath=//h3[normalize-space()='${pet_name}']
+	Click    ${pet_card}
+
+Open Edit Pet Form
+	Click    ${PET_DETAIL_EDIT_BUTTON}
+	Wait For Elements State    ${PET_FORM_EDIT_TITLE}    visible
+
+Generate Updated Pet Data
+	${updated_name}=    Generate Random Dog Name    UpdatedUiPet
+	${updated_photo}=   Set Variable    https://example.com/${updated_name}.jpg
+	VAR    ${UPDATED_PET_NAME}             ${updated_name}     scope=TEST
+	VAR    ${UPDATED_PET_STATUS}           available            scope=TEST
+	VAR    ${UPDATED_PET_CATEGORY_ID}      2                  scope=TEST
+	VAR    ${UPDATED_PET_CATEGORY_NAME}    updated-dog        scope=TEST
+	VAR    ${UPDATED_PET_PHOTO_URL}        ${updated_photo}   scope=TEST
+	VAR    ${UPDATED_PET_TAG}              ui-update          scope=TEST
+
+Verify Pet Was Updated
+	[Arguments]    ${updated_pet_name}
+	${updated_pet_card}=    Set Variable    xpath=//*[@id='pets-grid']//h3[normalize-space()='${updated_pet_name}']
+	Wait For Elements State    ${updated_pet_card}    visible
 
 Verify New Pet Was Added
 	[Arguments]    ${pet_name}
