@@ -19,6 +19,11 @@ Submit Login Form With Credentials
 	Fill Text    ${LOGIN_MODAL_PASSWORD_INPUT}    ${password}
 	Click    ${LOGIN_MODAL_SIGN_IN_BUTTON}
 
+Login As Default User
+	Open Login Form
+	Submit Login Form With Credentials    ${DEFAULT_ADMIN_USERNAME}    ${DEFAULT_ADMIN_PASSWORD}
+	Verify Login Success Is Displayed
+
 Verify Login Error Is Displayed
 	${error_text}=    Get Text    ${LOGIN_MODAL_ERROR_TOAST}
 	Should Contain    ${error_text}    Login failed
