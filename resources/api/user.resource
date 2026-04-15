@@ -35,6 +35,12 @@ Create Authenticated Test User
     ${token}=    Login As Test User
     RETURN    ${token}
 
+Update Test User
+    [Arguments]    ${username}=${TEST_USERNAME}    ${payload}=${EMPTY}
+    ${headers}=    Create Bearer Headers
+    ${response}=    Send PUT Request    /user/${username}    payload=${payload}    headers=${headers}    expected_status_code=200
+    RETURN    ${response}
+
 Logout
     ${headers}=    Create Json Headers
     VAR    ${logout_body}    {"token": "${token}"}

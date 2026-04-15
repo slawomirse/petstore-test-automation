@@ -21,3 +21,13 @@ Utworzenie Oraz Logowanie Testowego Uzytkownika
     [Teardown]    Logout
     Create Authenticated Test User
     Should Not Be Empty    ${token}
+
+Aktualizacja emaila Testowego Uzytkownika
+    [Documentation]    Sprawdza, czy mozna zaktualizowac email testowego uzytkownika.
+    [Setup]    Create Authenticated Test User
+    [Teardown]    Logout
+    VAR    ${update_payload}    {"email": "janusz@xxx.com"}
+    ${response}=    Update Test User    payload=${update_payload}
+    ${user_response}=    Send GET Request    /user/${TEST_USERNAME}    expected_status_code=200
+    ${email}=    Get Json Field    ${user_response}    email
+    Should Be Equal    ${email}    janusz@xxx.com
