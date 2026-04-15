@@ -1,6 +1,5 @@
 *** Settings ***
 Resource    ../../resources/api/common.resource
-Library    ../../libraries/payload_builders.py
 
 
 *** Test Cases ***
@@ -19,4 +18,4 @@ Tworzenie Zwierzecia Przez Niezalogowanego Uzytkownika
     ${headers}=    Create Json Headers
     ${payload}=    Build Pet Payload
     ${pet_body}=    Serialize To Json    ${payload}
-    Send POST Request    endpoint=/pet    payload=${pet_body}    headers=${headers}    expected_status_code=200
+    Send POST Request    endpoint=/pet    payload=${pet_body}    headers=${headers}    expected_status_code=401
