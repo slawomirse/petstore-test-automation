@@ -6,3 +6,8 @@ Weryfikacja trybu gościa
     Open Home Page
     Verify Home Page Is Loaded
     Verify User Is Logged In As Guest
+
+Weryfikacja domyślnego zwierzęcia na stronie głównej
+    Open Home Page
+    Verify Home Page Is Loaded
+    Verify Default Pet Is Displayed
