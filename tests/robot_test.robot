@@ -1,8 +1,5 @@
-*** Settings ***
-Library    custom_module.py
-
+*** Variables ***
+${ENV}    ${EMPTY}
 *** Test Cases ***
-Dodawanie Liczb
-    ${result}=    Add Two Numbers    2    3
-    ${expected_result}=    Evaluate    5
-    Should Be Equal    ${result}    ${expected_result}
+Wyswietl Srodowisko
+    Log    Environment: ${ENV}
