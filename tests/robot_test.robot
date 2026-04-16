@@ -1,7 +1,10 @@
 *** Test Cases ***
-Walidacja Tekstu
-    ${value}=    Set Variable    abc
-    Should Be Equal    ${value}    abc
-
-    ${text}=    Set Variable    Robot Framework jest prosty
-    Should Contain    ${text}    prosty
+Przyklad Try Except Finally
+    TRY
+        Log    Start
+        Fail    Blad w trakcie testu
+    EXCEPT
+        Log    Obsluga bledu
+    FINALLY
+        Log    Ten krok wykona sie zawsze
+    END
