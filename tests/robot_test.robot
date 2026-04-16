@@ -1,7 +1,8 @@
 *** Test Cases ***
-Test Z Wlasnym Keywordem
-    Wyswietl Komunikat
+Powitanie
+    Przywitaj Uzytkownika    Alice
 
 *** Keywords ***
-Wyswietl Komunikat
-    Log   To jest moj keyword
+Przywitaj Uzytkownika
+    [Arguments]    ${name}
+    Log    Hello ${name}
