@@ -1,8 +1,7 @@
 *** Test Cases ***
-Powitanie
-    Przywitaj Uzytkownika    Alice
+Walidacja Tekstu
+    ${value}=    Set Variable    abc
+    Should Be Equal    ${value}    abc
 
-*** Keywords ***
-Przywitaj Uzytkownika
-    [Arguments]    ${name}
-    Log    Hello ${name}
+    ${text}=    Set Variable    Robot Framework jest prosty
+    Should Contain    ${text}    prosty
