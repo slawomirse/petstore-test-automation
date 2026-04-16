@@ -1,11 +1,17 @@
+*** Settings ***
+Suite Setup       Przygotuj Suite
+Suite Teardown    Posprzataj Suite
+
 *** Test Cases ***
-Powitania Szablonem
-    [Template]    Przywitaj Uzytkownika
-    Alice
-    Bob
-    Charlie
+Pierwszy Test W Suite
+    Log    Wykonuje pierwszy test
+
+Drugi Test W Suite
+    Log    Wykonuje drugi test
 
 *** Keywords ***
-Przywitaj Uzytkownika
-    [Arguments]    ${name}
-    Log    Witaj, ${name}!
+Przygotuj Suite
+    Log    Start calej suite
+
+Posprzataj Suite
+    Log    Koniec calej suite
