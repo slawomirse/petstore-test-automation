@@ -1,10 +1,6 @@
 *** Test Cases ***
-Przyklad Try Except Finally
-    TRY
-        Log    Start
-        Fail    Blad w trakcie testu
-    EXCEPT
-        Log    Obsluga bledu
-    FINALLY
-        Log    Ten krok wykona sie zawsze
+Petla Po Imionach
+    @{users}=    Create List    Alice    Bob    Charlie
+    FOR    ${user}    IN    @{users}
+        Log    ${user}
     END
