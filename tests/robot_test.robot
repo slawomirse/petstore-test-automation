@@ -1,17 +1,12 @@
-*** Settings ***
-Suite Setup       Przygotuj Suite
-Suite Teardown    Posprzataj Suite
-
 *** Test Cases ***
-Pierwszy Test W Suite
-    Log    Wykonuje pierwszy test
-
-Drugi Test W Suite
-    Log    Wykonuje drugi test
+Moj Test
+    [Setup]       Przygotuj Test
+    [Teardown]    Posprzataj Test
+    Log To Console    Wykonanie testu
 
 *** Keywords ***
-Przygotuj Suite
-    Log    Start calej suite
+Przygotuj Test
+    Log To Console    Przygotowanie
 
-Posprzataj Suite
-    Log    Koniec calej suite
+Posprzataj Test
+    Log To Console    Sprzatanie
