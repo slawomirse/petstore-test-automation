@@ -47,3 +47,20 @@ Usuwanie Zwierzecia Przez Zalogowanego Uzytkownika
     [Setup]    Create Pet
     Delete Pet
     Send GET Request    /pet/${pet_id}    expected_status_code=404
+
+Proba Usuniecia Zwierzecia Przez Niezalogowanego Uzytkownika
+    [Documentation]    Praca domowa - Sprawdzenie, czy nie jest możliwe usunięcie zwierzęcia bez logowania
+    [Setup]    Create Pet
+    ${response}=    Send DELETE Request    /pet/${pet_id}    expected_status_code=401
+    ${detail}=    Get Json Field    ${response}    detail
+    Should Be Equal    ${detail}    Not authenticated
+
+Znalezienie Zwierzecia Po Tagu
+    [Documentation]    Praca domowa - Sprawdzenie, czy można znaleźć istniejące zwierzę po tagu
+    [Setup]    Create Pet
+    ${response}=    Get Pet By Tag    tag=friendly
+    Should Be True    len(${response.json()}) > 0
+
+Proba Filtrowania Zwierzat Po Niestniejacym Statusie
+    [Documentation]    Praca domowa - Użycie nieistniejącego statusu do filtrowania zwierząt powinno zwrócić błąd
+    Send GET Request    /pet/findByStatus    params=?status=not-existing-status    expected_status_code=400
