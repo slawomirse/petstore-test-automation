@@ -14,13 +14,29 @@ Login As Default Admin
     Set Suite Variable    ${token}    ${token}
 
 Create Test User
+    Create Test User With Password    password=${test_password}
+
+Create Test User With Password
+    [Arguments]    ${password}
     ${headers}=    Create Json Headers
-    ${payload}=    Build User Payload    password=${test_password}
+    ${payload}=    Build User Payload    password=${password}
     VAR    ${test_username}    ${payload['username']}    scope=TEST
     VAR    ${test_user_id}    ${payload['id']}    scope=TEST
     ${body}=    Serialize To Json    ${payload}
     ${response}=    Send POST Request    /user    payload=${body}    headers=${headers}    expected_status_code=200
     RETURN    ${response}
+
+Build User Json
+   ${payload}=    Build User Payload    password=${test_password}
+    VAR    ${test_username}    ${payload['username']}    scope=TEST
+    VAR    ${test_user_id}    ${payload['id']}    scope=TEST
+    ${body}=    Serialize To Json    ${payload}
+    RETURN    ${body}
+
+Delete Test User
+    ${headers}=    Create Bearer Headers
+    Send DELETE Request    /user/${TEST_USERNAME}   headers=${headers}  expected_status_code=200
+
 
 Login As Test User
     ${auth}=    Evaluate   ($test_username, $test_password)
