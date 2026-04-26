@@ -33,3 +33,26 @@ Aktualizacja emaila Testowego Uzytkownika
     ${user_response}=    Send GET Request    /user/${TEST_USERNAME}    expected_status_code=200
     ${email}=    Get Json Field    ${user_response}    email
     Should Be Equal    ${email}    janusz@xxx.com
+
+Proba Logowania Zlym Haslem
+    [Documentation]    Praca domowa - Próba logowania złym hasłem użytkownika powinna zakończyć się niepowodzeniem.
+    Create Test User With Password    password=user123
+    ${auth}=    Evaluate   ($test_username, "654321")
+    Send GET Request    /user/login    auth=${auth}    expected_status_code=401
+
+Usuwanie Urzytkownika
+    [Documentation]    Praca domowa - Usunięcie użytkownika i potwierdzenie, że został on usunięty.
+    Create Authenticated Test User
+    VAR    ${test_user_URL}    /user/${TEST_USERNAME}
+    Send GET Request    ${test_user_URL}    expected_status_code=200    #Upewnienie się, że istnieje
+    Delete Test User
+    Send GET Request    ${test_user_URL}    expected_status_code=404
+
+Utworzenie Dwoch Takich Samych Uzytkownikow Nie Jest Mozliwe
+    [Documentation]    Praca domowa - Sprawdzenie, czy nie jest możliwe utworzenie dwóch identycznych użytkowników
+    ${headers}=    Create Json Headers
+    ${body}=    Build User Json
+    Send POST Request    /user    payload=${body}    headers=${headers}    expected_status_code=200
+    ${response}=    Send POST Request    /user    payload=${body}    headers=${headers}    expected_status_code=400
+    ${error_message}=    Get Json Field    ${response}    message
+    Should Be Equal    ${error_message}    Username already exists
