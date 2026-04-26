@@ -19,6 +19,11 @@ Update Pet
     ${response}=    Send PUT Request    /pet/    payload=${payload}    headers=${headers}    expected_status_code=200
     RETURN    ${response}
 
+Get Pet By Tag
+    [Arguments]    ${tag}=${EMPTY}
+    ${response}=    Send GET Request    /pet/findByTags    params=?tags=${tag}    expected_status_code=200
+    RETURN    ${response}
+
 Delete Pet
     ${headers}=    Create Bearer Headers
     ${response}=    Send DELETE Request    /pet/${pet_id}    headers=${headers}    expected_status_code=200
